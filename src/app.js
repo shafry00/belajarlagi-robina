@@ -36,6 +36,9 @@ var CASES=[
  nodes:['Log keluhan','Dikelompokkan per kategori','Jumlah dan rata-rata menit'],dash:'Keluhan per kategori',dsub:'Data contoh fiktif'}
 ];
 var STEPS=[['mulai','Mulai','Anggapan dan studi kasus'],['alur','Alur','Susun alur kerja'],['data','Data','Siapkan data'],['tes','Jalankan','Jalankan dan tes'],['dashboard','Dashboard','Bikin dashboard'],['kumpulkan','Kumpulkan','Kumpulkan hasil']];
+var HOMECARDS=[['sparkles','Mulai','Anggapan dan pilih studi kasus yang mirip pekerjaanmu.'],['route','Alur','Susun alur kerja: data masuk, diolah, hasil keluar.'],['database','Data','Siapkan data contoh, atau datamu sendiri.'],['play','Jalankan','Jalankan workflow lalu cocokkan dengan jawaban yang kamu tahu.'],['layout-dashboard','Dashboard','Opsional: bikin papan angka sederhana dari hasilmu.'],['send','Kumpulkan','Susun ringkasan, lalu kirim ke Workflow Canvas.']];
+var CARDGRAD=['linear-gradient(135deg,#6C63D8,#8B7FF0)','linear-gradient(135deg,#4F8EF0,#7FB3F5)','linear-gradient(135deg,#2FB6A3,#6FD6C4)','linear-gradient(135deg,#9A5BD6,#C08BE8)','linear-gradient(135deg,#F0A64F,#F5C878)','linear-gradient(135deg,#D6478F,#F0A0C8)'];
+function ic(){try{if(window.lucide)lucide.createIcons();}catch(e){}}
 var KPIS=[['total','Total keseluruhan'],['avg','Rata-rata per kelompok'],['max','Tertinggi'],['min','Terendah'],['n','Jumlah kelompok'],['rows','Baris data dipakai']];
 var CF=['nama','masalah','pengguna','input','l1','l2','l3','output','aturan'];
 
@@ -53,6 +56,13 @@ function tbl(h,rows,o){o=o||{};return '<div class="tw"><table><thead><tr>'+h.map
   rows.map(function(r,i){return '<tr'+(o.cls&&o.cls[i]?' class="'+o.cls[i]+'"':'')+'>'+r.map(function(c,j){return '<td'+(j>0&&o.num!==false?' class="r"':'')+'>'+T(c)+'</td>';}).join('')+'</tr>';}).join('')+'</tbody>'+
   (o.foot?'<tfoot><tr>'+o.foot.map(function(c,j){return '<td'+(j>0?' class="r"':'')+'>'+T(c)+'</td>';}).join('')+'</tr></tfoot>':'')+'</table></div>';}
 function show(el,on){el.hidden=!on;}
+
+/* splash + home hub */
+function drawHomeMenu(){$('homeMenu').innerHTML=HOMECARDS.map(function(c,i){return '<button type="button" class="mcard" data-i="'+i+'"><span class="ico" style="background:'+CARDGRAD[i]+'"><i data-lucide="'+c[0]+'"></i></span><span class="no">LANGKAH '+(i+1)+' DARI 6</span><b>'+T(c[1])+'</b><span>'+T(c[2])+'</span></button>';}).join('');ic();}
+function enterApp(i){$('home').classList.remove('in');setTimeout(function(){show($('home'),false);show($('appview'),true);show($('navbar'),true);go(i);},180);}
+function showHome(){show($('appview'),false);show($('navbar'),false);show($('home'),true);requestAnimationFrame(function(){requestAnimationFrame(function(){$('home').classList.add('in');});});}
+function splash(){var h=location.hash.replace('#',''),i=-1;for(var k=0;k<6;k++)if(STEPS[k][0]===h)i=k;
+  setTimeout(function(){$('loading').classList.add('hide');if(i>-1){show($('home'),false);show($('appview'),true);show($('navbar'),true);go(i,true);}else showHome();},i>-1?500:1100);}
 
 /* stepper */
 function drawStepper(){var h='';STEPS.forEach(function(s,i){var done=doneStep(i);h+='<button type="button" class="st'+(done?' done':'')+'" data-i="'+i+'"'+(i===S.i?' aria-current="step"':'')+'><span class="n">'+(done?'✓':(i+1))+'</span><span class="t">'+T(s[1])+'</span></button>';});$('stepper').innerHTML=h;
@@ -264,7 +274,9 @@ function bind(){
       case 'btnPaste':{var t=$('paste').value;if(!t.trim()){say('msgData','Kotaknya masih kosong. Tempel sel dulu.','bad');break;}setData(toDataset(parseDelim(t)),'tempelan dari spreadsheet');break;}
       case 'btnSheets':loadSheets();break;case 'btnRun':runWF();break;case 'btnTest':doTest();break;
       case 'btnKey':{var cc=CASE();if(cc){$('expected').value=String(cc.key);S.expected=String(cc.key);save();}break;}
-      case 'btnNote':fillNotes();break;case 'btnDash':makeDash();break;case 'btnDl':doDl();break;case 'btnSum':makeSum();break;case 'btnReset':doReset();break;case 'theme':{var d=document.documentElement,dark=d.getAttribute('data-theme')==='dark'||(!d.getAttribute('data-theme')&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);d.setAttribute('data-theme',dark?'light':'dark');b.textContent=dark?'Tema gelap':'Tema terang';b.setAttribute('aria-pressed',dark?'false':'true');break;}}
+      case 'btnNote':fillNotes();break;case 'btnDash':makeDash();break;case 'btnDl':doDl();break;case 'btnSum':makeSum();break;case 'btnReset':doReset();break;
+      case 'btnStart':enterApp(0);break;}
+    var mc=b.closest('.mcard');if(mc)enterApp(+mc.getAttribute('data-i'));
     var sg=b.closest('#srcSeg');if(sg&&b.getAttribute('data-src')){setSrc(b.getAttribute('data-src'));save();}
     var cg=b.closest('#segChart,#segAcc');if(cg){qa('button',cg).forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});}});
   CF.forEach(function(k){$('c-'+k).addEventListener('input',function(){S.canvas[k]=this.value;save();});});
@@ -276,12 +288,13 @@ function bind(){
   $('notes').addEventListener('input',function(e){var k=e.target.getAttribute('data-n');if(k){S.notes[k]=e.target.value;save();}});
   window.addEventListener('hashchange',function(){var h=location.hash.replace('#','');for(var i=0;i<6;i++)if(STEPS[i][0]===h&&i!==S.i){go(i,true);return;}});
 }
+window.addEventListener('load',ic);window.addEventListener('DOMContentLoaded',ic);
 async function init(){load();
   var st=document.createElement('style');st.textContent=dashCSS();document.head.appendChild(st);
   try{if(typeof claude!=='undefined'&&claude&&claude.use){try{DL=await claude.use('downloads');}catch(e){DL=null;}try{MCP=await claude.use('mcp');}catch(e){MCP=null;}}}catch(e){}
   if(MCP)$('segSheets').hidden=false;
-  drawCases();drawCanvas();bind();setSrc(S.src==='sheets'&&!MCP?'sample':S.src);$('dirty').checked=!!S.dirty;
+  drawCases();drawCanvas();drawHomeMenu();bind();setSrc(S.src==='sheets'&&!MCP?'sample':S.src);$('dirty').checked=!!S.dirty;
   renderCase();renderFlow();renderData();renderRun();renderTest();renderSum();if(S.tested){drawNotes();}
-  var h=location.hash.replace('#',''),i=S.i;for(var k=0;k<6;k++)if(STEPS[k][0]===h)i=k;go(i,true);}
+  var h=location.hash.replace('#',''),i=S.i;for(var k=0;k<6;k++)if(STEPS[k][0]===h)i=k;S.i=i;ic();splash();}
 init();
 })();

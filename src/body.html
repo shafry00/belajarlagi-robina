@@ -1,12 +1,50 @@
 <body>
-<div class="wrap">
+<!-- juni-design-pro-max
+component: 21st.dev soft-glass dashboard card + icon-grid menu referensi (lihat sesi riset sebelumnya)
+wireframe: splash logo besar -> home hub (hero + grid 6 kartu langkah) -> 6 panel step-by-step berurutan
+motion: fade-up panel pop existing + splash crossfade ke hub + hub fade-up-in, prefers-reduced-motion dihormati di head.html
+font: Inter + Plus Jakarta Sans (base64 woff2 variable font, di-embed di src/head.html yang digabung build.sh jadi satu dokumen dengan file ini)
+copy: human-pass Bahasa Indonesia santai-profesional, konsisten dengan gaya slide "Building the First Version"
+-->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="lockupLogo" viewBox="0 0 345 40">
+    <circle cx="14" cy="10" r="3" fill="#D8A33B"></circle>
+    <path d="M4 32 L16 10 L28 32 Z" fill="none" stroke="#8A5A1E" stroke-width="3" stroke-linejoin="round"></path>
+    <text x="34" y="27" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="16" letter-spacing="1.5" fill="#2b2b2b">ROBINA</text>
+    <text x="152" y="27" font-family="'Plus Jakarta Sans',sans-serif" font-weight="600" font-size="18" fill="#9196b5">&#215;</text>
+    <svg x="172" y="3" width="34" height="34" viewBox="0 0 36 34">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M31.95 26.6441L35.1119 17.0306C35.5747 15.6266 35.5752 14.114 35.1134 12.7097C34.6516 11.3054 33.7512 10.0815 32.5414 9.21376L24.2589 3.27442C23.0497 2.40541 21.5925 1.93727 20.0969 1.93727C18.6013 1.93727 17.1442 2.40541 15.9349 3.27442L14.6724 4.18367L17.5603 12.9583L18.4809 12.2979C19.3289 11.6896 20.4771 11.6896 21.3251 12.2979L24.48 14.561C25.3279 15.1693 25.6828 16.2476 25.3589 17.2318L24.1538 20.8937C23.8299 21.8779 22.901 22.5443 21.8528 22.5443L20.7154 22.5443L23.6548 31.4752L25.2164 31.4752C26.7115 31.4747 28.1682 31.0071 29.3777 30.1393C30.5873 29.2715 31.4877 28.048 31.95 26.6441Z" fill="#3967BD"></path>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M14.9804 31.4751L23.6549 31.4751L14.6719 4.18304C14.3137 3.0958 13.6162 2.14838 12.6793 1.4765C11.7424 0.804622 10.6141 0.442754 9.45615 0.442733L2.05802 0.442734C1.77878 0.443133 1.5036 0.508682 1.25489 0.634038C1.00619 0.759393 0.791013 0.941007 0.626903 1.16407C0.462793 1.38713 0.354398 1.64533 0.310554 1.91762C0.26671 2.1899 0.288659 2.46856 0.374611 2.73088L5.07043 16.9978L8.2462 26.6441C8.70772 28.0485 9.60799 29.2726 10.8178 30.1405C12.0277 31.0085 13.4849 31.4757 14.9804 31.4751ZM9.84875 17.5128C9.84875 18.1949 9.28869 18.7479 8.59782 18.7479C7.90695 18.7479 7.34689 18.1949 7.34689 17.5128C7.34689 16.8306 7.90695 16.2777 8.59782 16.2777C9.28869 16.2777 9.84875 16.8306 9.84875 17.5128Z" fill="#F2343D"></path>
+    </svg>
+    <text x="212" y="27" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="19" fill="#1D2142">belajarlagi</text>
+  </symbol>
+</svg>
+
+<!-- loading screen -->
+<div id="loading">
+  <div class="in">
+    <svg viewBox="0 0 345 40" style="width:220px;height:auto"><use href="#lockupLogo"></use></svg>
+    <div class="bar"><i></i></div>
+    <p>Menyiapkan praktik versi pertama&#8230;</p>
+  </div>
+</div>
+
+<!-- home hub -->
+<section id="home" hidden>
+  <div class="hero">
+    <svg viewBox="0 0 345 40" style="width:230px;height:auto"><use href="#lockupLogo"></use></svg>
+    <p class="eyebrow">Session 3 &#183; Building the First Version</p>
+    <h1>Praktik <em>versi pertama</em></h1>
+    <p class="lead" style="text-align:center">Enam langkah, mengikuti slide. Tiap langkah menghasilkan sesuatu dari studi kasusmu. Datamu tersimpan di browser ini saja dan tidak dikirim ke mana pun.</p>
+    <button class="btn heroBtn" id="btnStart" type="button">Mulai praktik <i data-lucide="arrow-right" class="ic"></i></button>
+  </div>
+  <div class="menu" id="homeMenu"></div>
+</section>
+
+<!-- step-by-step app -->
+<div class="wrap" id="appview" hidden>
   <div class="top">
-    <div>
-      <p class="eyebrow"><img src="data:image/png;base64,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" alt="Robina x belajarlagi">Session 3 · Building the First Version</p>
-      <h1>Praktik <em>versi pertama</em></h1>
-      <p class="lead">Enam langkah, mengikuti slide. Tiap langkah menghasilkan sesuatu dari studi kasusmu. Datamu tersimpan di browser ini saja dan tidak dikirim ke mana pun.</p>
-    </div>
-    <button class="theme" id="theme" type="button" aria-pressed="false">Tema gelap</button>
+    <p class="eyebrow"><svg viewBox="0 0 345 40" style="width:150px;height:auto"><use href="#lockupLogo"></use></svg></p>
   </div>
   <nav class="stepper" id="stepper" aria-label="Langkah"></nav>
   <p class="stepname" id="stepname"></p>
@@ -14,7 +52,8 @@
   <!-- 1 MULAI -->
   <section class="panel p1" id="p-mulai" data-i="0">
     <div class="card">
-      <h2>Tiga aturan hari ini</h2>
+      <span class="kicker">Sebelum mulai</span>
+      <h2><i data-lucide="shield-check" class="ic"></i>Tiga aturan hari ini</h2>
       <ul class="rules">
         <li><span class="dot">1</span><div><b>Boleh kasar</b>Versi pertama tidak perlu rapi. Yang penting jalan.</div></li>
         <li><span class="dot">2</span><div><b>Pakai data contoh</b>Tamu dan angka fiktif. Jangan tempel data tamu atau data kantor asli.</div></li>
@@ -22,7 +61,8 @@
       </ul>
     </div>
     <div class="card">
-      <h2>Tiga anggapan yang menjebak</h2>
+      <span class="kicker">Luruskan dulu</span>
+      <h2><i data-lucide="lightbulb" class="ic"></i>Tiga anggapan yang menjebak</h2>
       <div class="myth">
         <div><s>Harus bisa coding dulu.</s><b>Yang kamu butuhkan adalah urutan kerja yang jelas.</b></div>
         <div><s>Satu prompt panjang itu sudah workflow.</s><b>Prompt itu satu langkah. Workflow itu urutannya.</b></div>
@@ -30,10 +70,11 @@
       </div>
     </div>
     <div class="card accent">
-      <h2>Pilih studi kasus</h2>
+      <span class="kicker">Langkah 1 dari 6</span>
+      <h2><i data-lucide="list-checks" class="ic"></i>Pilih studi kasus</h2>
       <p class="lead">Pilih tugas yang paling mirip pekerjaanmu. Dua yang bertanda "versi kecil" sengaja disederhanakan.</p>
       <div class="cases" id="caseGrid" role="radiogroup" aria-label="Studi kasus"></div>
-      <div class="row"><button class="btn" id="btnCase" type="button">Mulai studi kasus ini</button></div>
+      <div class="row"><button class="btn" id="btnCase" type="button"><i data-lucide="play" class="ic"></i>Mulai studi kasus ini</button></div>
       <p class="msg" id="msgCase" role="status"></p>
     </div>
     <div class="res" id="resCase" hidden></div>
@@ -42,9 +83,10 @@
   <!-- 2 ALUR -->
   <section class="panel" id="p-alur" data-i="1" hidden>
     <div class="card accent">
-      <h2>Susun alur kerjamu</h2>
+      <span class="kicker">Langkah 2 dari 6</span>
+      <h2><i data-lucide="route" class="ic"></i>Susun alur kerjamu</h2>
       <p class="lead">Satu kalimat per kolom sudah cukup. Isinya terisi dari studi kasusmu, ubah sesuai pekerjaanmu.</p>
-      <div class="row" style="margin-bottom:14px"><button class="btn ghost sm" id="btnFill" type="button">Isi ulang dari studi kasus</button><button class="btn ghost sm" id="btnClear" type="button">Kosongkan</button></div>
+      <div class="row" style="margin-bottom:14px"><button class="btn ghost sm" id="btnFill" type="button"><i data-lucide="refresh-cw" class="ic"></i>Isi ulang dari studi kasus</button><button class="btn ghost sm" id="btnClear" type="button"><i data-lucide="x" class="ic"></i>Kosongkan</button></div>
       <div class="field"><label for="c-nama">Nama workflow</label><input type="text" id="c-nama" data-c="nama"></div>
       <div class="field"><label for="c-masalah">Masalah yang ingin dibereskan</label><textarea id="c-masalah" data-c="masalah"></textarea></div>
       <div class="field"><label for="c-pengguna">Siapa yang memakai hasilnya <small class="mut">(boleh kosong)</small></label><input type="text" id="c-pengguna" data-c="pengguna"></div>
@@ -56,7 +98,7 @@
       </div>
       <div class="field"><label for="c-output">Hasil yang diharapkan</label><textarea id="c-output" data-c="output"></textarea></div>
       <div class="field"><label for="c-aturan">Aturan yang harus dipenuhi</label><textarea id="c-aturan" data-c="aturan"></textarea></div>
-      <div class="row"><button class="btn" id="btnFlow" type="button">Buat alur kerja</button></div>
+      <div class="row"><button class="btn" id="btnFlow" type="button"><i data-lucide="hammer" class="ic"></i>Buat alur kerja</button></div>
       <p class="msg" id="msgFlow" role="status"></p>
     </div>
     <div class="res" id="resFlow" hidden></div>
@@ -65,7 +107,8 @@
   <!-- 3 DATA -->
   <section class="panel" id="p-data" data-i="2" hidden>
     <div class="card accent">
-      <h2>Siapkan data</h2>
+      <span class="kicker">Langkah 3 dari 6</span>
+      <h2><i data-lucide="database" class="ic"></i>Siapkan data</h2>
       <p class="lead">Pilih sumbernya. Semua diproses di browser ini. Tidak ada yang diunggah ke server.</p>
       <div class="seg" id="srcSeg" role="group" aria-label="Sumber data">
         <button type="button" data-src="sample" aria-pressed="true">Data contoh</button>
@@ -76,7 +119,7 @@
       <div id="src-sample" style="margin-top:14px">
         <p class="mut" id="sampleInfo"></p>
         <label class="chk"><input type="checkbox" id="dirty"><span><b>Selipkan data berantakan untuk latihan</b><small>Spasi nyasar, huruf besar kecil beda, sel kosong. Persis jebakan di slide.</small></span></label>
-        <button class="btn" id="btnSample" type="button">Muat data contoh</button>
+        <button class="btn" id="btnSample" type="button"><i data-lucide="database" class="ic"></i>Muat data contoh</button>
       </div>
       <div id="src-upload" style="margin-top:14px" hidden>
         <div class="drop" id="drop"><p style="margin:0 0 8px"><b>Seret berkas ke sini</b> atau pilih dari komputer</p><input type="file" id="file" accept=".xlsx,.xlsm,.csv,.tsv,.txt"><p class="hint" style="margin:8px 0 0">Format: .xlsx, .csv, .tsv. Lembar pertama yang dibaca. Baris pertama harus nama kolom.</p></div>
@@ -89,13 +132,13 @@
         </ol>
         <p class="hint">Halaman ini tidak bisa membuka link Google Sheets langsung. Menyalin sel adalah cara paling aman: tidak perlu izin akses.</p>
         <textarea class="mono" id="paste" placeholder="tipe_kamar&#9;malam&#9;total&#10;Deluxe&#9;2&#9;1100000"></textarea>
-        <div class="row" style="margin-top:10px"><button class="btn" id="btnPaste" type="button">Muat data tempelan</button></div>
+        <div class="row" style="margin-top:10px"><button class="btn" id="btnPaste" type="button"><i data-lucide="clipboard-paste" class="ic"></i>Muat data tempelan</button></div>
       </div>
       <div id="src-sheets" style="margin-top:14px" hidden>
         <p class="mut" style="margin:0 0 10px">Membaca lewat konektor Google Sheets milikmu sendiri. Claude akan minta izin sekali. Halaman ini hanya membaca, tidak mengubah sheet.</p>
         <div class="field"><label for="sh-url">Link atau ID spreadsheet</label><input type="text" id="sh-url" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
         <div class="field"><label for="sh-range">Rentang sel</label><input type="text" id="sh-range" value="A1:Z1000"><small class="mut">Contoh: Sheet1!A1:F200. Baris pertama harus nama kolom.</small></div>
-        <button class="btn" id="btnSheets" type="button">Baca dari Google Sheets</button>
+        <button class="btn" id="btnSheets" type="button"><i data-lucide="cloud-download" class="ic"></i>Baca dari Google Sheets</button>
       </div>
       <p class="msg" id="msgData" role="status"></p>
     </div>
@@ -105,7 +148,8 @@
   <!-- 4 JALANKAN DAN TES -->
   <section class="panel" id="p-tes" data-i="3" hidden>
     <div class="card accent">
-      <h2>Atur dan jalankan workflow</h2>
+      <span class="kicker">Langkah 4 dari 6</span>
+      <h2><i data-lucide="play" class="ic"></i>Atur dan jalankan workflow</h2>
       <p class="lead" id="wfInfo">Pilih cara menghitungnya. Sudah terisi sesuai studi kasusmu.</p>
       <div class="grid2">
         <div class="field"><label for="w-group">Kelompokkan menurut</label><select id="w-group"></select></div>
@@ -121,33 +165,34 @@
         <label class="chk"><input type="checkbox" id="cl-case"><span><b>Samakan huruf besar kecil</b><small>"Deluxe" dan "deluxe " dianggap sama.</small></span></label>
         <label class="chk"><input type="checkbox" id="cl-empty"><span><b>Buang baris yang angkanya kosong</b></span></label>
         <label class="chk"><input type="checkbox" id="cl-dup"><span><b>Buang baris dobel</b></span></label></div>
-      <div class="row"><button class="btn" id="btnRun" type="button">Jalankan workflow</button></div>
+      <div class="row"><button class="btn" id="btnRun" type="button"><i data-lucide="play" class="ic"></i>Jalankan workflow</button></div>
       <p class="msg" id="msgRun" role="status"></p>
     </div>
     <div class="res" id="resRun" hidden></div>
     <div class="card" id="cardTest" hidden>
-      <h2>Tes: cocokkan hasilnya</h2>
+      <h2><i data-lucide="check-circle-2" class="ic"></i>Tes: cocokkan hasilnya</h2>
       <p class="lead" id="testInfo"></p>
       <div class="field" id="expWrap" hidden><label for="expected">Angka total yang kamu tahu <small class="mut">(dari hitungan sendiri)</small></label><input type="text" id="expected" inputmode="decimal" placeholder="Contoh: 4650000"></div>
-      <div class="row"><button class="btn red" id="btnTest" type="button">Cocokkan dengan jawaban</button><button class="btn ghost sm" id="btnKey" type="button" hidden>Tampilkan jawaban kunci</button></div>
+      <div class="row"><button class="btn red" id="btnTest" type="button"><i data-lucide="check-circle-2" class="ic"></i>Cocokkan dengan jawaban</button><button class="btn ghost sm" id="btnKey" type="button" hidden>Tampilkan jawaban kunci</button></div>
       <p class="msg" id="msgTest" role="status"></p>
     </div>
     <div class="res" id="resTest" hidden></div>
     <div class="card" id="cardNotes" hidden>
-      <h2>Catatan tes</h2>
+      <h2><i data-lucide="notebook-pen" class="ic"></i>Catatan tes</h2>
       <p class="lead">Tiga baris saja. Tombol di bawah mengisi dari hasil tesmu. Catatan ini dibahas di minggu mentoring.</p>
       <div id="notes"></div>
-      <div class="row"><button class="btn ghost sm" id="btnNote" type="button">Isi dari hasil tes</button></div>
+      <div class="row"><button class="btn ghost sm" id="btnNote" type="button"><i data-lucide="refresh-cw" class="ic"></i>Isi dari hasil tes</button></div>
       <h3 style="margin-top:16px">Pertanyaan untuk Claude kalau masih mentok</h3>
       <pre class="prompt" id="stuckP"></pre>
-      <div class="row" style="margin-top:8px"><button class="btn ghost sm" data-act="copy" data-src="stuckP" type="button">Salin pertanyaan</button></div>
+      <div class="row" style="margin-top:8px"><button class="btn ghost sm" data-act="copy" data-src="stuckP" type="button"><i data-lucide="copy" class="ic"></i>Salin pertanyaan</button></div>
     </div>
   </section>
 
   <!-- 5 DASHBOARD -->
   <section class="panel" id="p-dash" data-i="4" hidden>
     <div class="card accent">
-      <h2>Bikin dashboard dari hasilmu</h2>
+      <span class="kicker">Langkah 5 dari 6 &#183; opsional</span>
+      <h2><i data-lucide="layout-dashboard" class="ic"></i>Bikin dashboard dari hasilmu</h2>
       <p class="lead">Papan angka sederhana: beberapa angka dan satu grafik. Hasilnya satu berkas HTML yang bisa dibuka offline dan diisi data baru.</p>
       <div class="grid2">
         <div class="field"><label for="d-title">Judul</label><input type="text" id="d-title"></div>
@@ -162,7 +207,7 @@
       <div id="kpiList"></div>
       <label class="chk"><input type="checkbox" id="d-raw"><span><b>Sertakan data mentah di berkas</b><small>Maksimal 200 baris. Biarkan mati kalau datanya sensitif.</small></span></label>
       <div class="field"><label for="d-note">Catatan kaki <small class="mut">(boleh kosong)</small></label><input type="text" id="d-note"></div>
-      <div class="row"><button class="btn" id="btnDash" type="button">Buat dashboard</button></div>
+      <div class="row"><button class="btn" id="btnDash" type="button"><i data-lucide="layout-dashboard" class="ic"></i>Buat dashboard</button></div>
       <p class="msg" id="msgDash" role="status"></p>
     </div>
     <div class="res" id="resDash" hidden></div>
@@ -170,16 +215,17 @@
       <summary>Atau minta Claude Code yang menyusun</summary>
       <p class="lead">Tempel ini ke Claude Code bersama file datamu. Hitung ulang angkanya sendiri sebelum dipercaya.</p>
       <pre class="prompt" id="ccP"></pre>
-      <div class="row" style="margin-top:8px"><button class="btn ghost sm" data-act="copy" data-src="ccP" type="button">Salin prompt</button></div>
+      <div class="row" style="margin-top:8px"><button class="btn ghost sm" data-act="copy" data-src="ccP" type="button"><i data-lucide="copy" class="ic"></i>Salin prompt</button></div>
     </details>
   </section>
 
   <!-- 6 KUMPULKAN -->
   <section class="panel" id="p-kumpul" data-i="5" hidden>
     <div class="card accent">
-      <h2>Kumpulkan hasilnya</h2>
+      <span class="kicker">Langkah 6 dari 6</span>
+      <h2><i data-lucide="send" class="ic"></i>Kumpulkan hasilnya</h2>
       <p class="lead">Ringkasan ini terisi dari semua langkah. Salin ke Workflow Canvas-mu lalu kirim hari ini. Belum sempurna pun tidak apa.</p>
-      <div class="row" style="margin-bottom:12px"><button class="btn" id="btnSum" type="button">Susun ringkasan</button></div>
+      <div class="row" style="margin-bottom:12px"><button class="btn" id="btnSum" type="button"><i data-lucide="send" class="ic"></i>Susun ringkasan</button></div>
       <p class="msg" id="msgSum" role="status"></p>
     </div>
     <div class="res" id="resSum" hidden></div>
@@ -190,8 +236,8 @@
     <div class="card">
       <h3>Hapus semua dari browser ini</h3>
       <p class="mut">Menghapus isian, data, dan hasil. Tidak bisa dibatalkan.</p>
-      <div class="row"><button class="btn ghost sm" id="btnReset" type="button">Hapus semua</button><span class="msg" id="msgReset"></span></div>
+      <div class="row"><button class="btn ghost sm" id="btnReset" type="button"><i data-lucide="trash-2" class="ic"></i>Hapus semua</button><span class="msg" id="msgReset"></span></div>
     </div>
   </section>
 </div>
-<div class="navbar"><div class="in"><button class="btn ghost" id="prev" type="button">Sebelumnya</button><button class="btn" id="next" type="button">Lanjut</button></div></div>
+<div class="navbar" id="navbar" hidden><div class="in"><button class="btn ghost" id="prev" type="button">Sebelumnya</button><button class="btn" id="next" type="button">Lanjut</button></div></div>
