@@ -9,29 +9,40 @@ function lsDel(k){try{localStorage.removeItem(k);}catch(e){}}
 function rowsCSV(a){return a.map(function(r){return r.join(',');}).join('\n');}
 
 var CASES=[
+{id:'pengingat',name:'Pengingat laporan harian divisi',desc:'Temukan divisi yang belum mengirim laporan hari ini, lalu ingatkan.',tag:'ok',
+ canvas:{nama:'Pengingat laporan harian divisi',masalah:'Aku mengingatkan dan memeriksa laporan tiap divisi secara manual setiap hari, dan ada yang terlewat.',pengguna:'Koordinator tim',input:'Daftar divisi dengan kolom divisi, penanggung_jawab, status (Sudah atau Belum)',l1:'Baca daftar status laporan',l2:'Saring divisi yang statusnya Belum',l3:'Siapkan daftar divisi yang perlu diingatkan',output:'Daftar divisi yang belum melapor beserta jumlahnya',aturan:'Status hanya Sudah atau Belum. Penulisan status harus seragam. Sel kosong ditandai, tidak ditebak.'},
+ rows:[['divisi','penanggung_jawab','status'],['Housekeeping','Rina','Sudah'],['Front Office','Budi','Belum'],['F&B','Sari','Belum']],
+ dirty:{col:2,row:2,nodup:true},
+ cfg:{group:'divisi',fcol:'status',fval:'Belum',m1:{col:'divisi',agg:'count'},rel:'none'},key:2,keyLabel:'Jumlah divisi yang perlu diingatkan (status Belum)',unit:'num',
+ nodes:['Daftar status laporan tiap divisi','Disaring: status Belum','Daftar divisi yang perlu diingatkan'],dash:'Divisi yang belum melapor',dsub:'Data contoh fiktif'},
 {id:'reservasi',name:'Rekap reservasi per tipe kamar',desc:'Jumlahkan pendapatan tiap tipe kamar dari daftar reservasi.',tag:'ok',
  canvas:{nama:'Rekap reservasi per tipe kamar',masalah:'Tiap hari aku menjumlah reservasi per tipe kamar secara manual dan sering salah hitung.',pengguna:'Supervisor front office',input:'Daftar reservasi dengan kolom kode, tipe_kamar, malam, total',l1:'Baca daftar reservasi',l2:'Kelompokkan menurut tipe kamar',l3:'Jumlahkan total tiap tipe',output:'Tabel total pendapatan per tipe kamar dan total keseluruhan',aturan:'Penulisan tipe kamar harus seragam. Baris dobel dibuang. Total harus cocok dengan hitungan manual.'},
  rows:[['kode','tipe_kamar','malam','total'],['R001','Deluxe','2','1100000'],['R002','Deluxe','1','550000'],['R003','Deluxe','1','550000'],['R004','Superior','1','650000'],['R005','Suite','1','1800000']],
+ dirty:{col:1,row:2,nodup:false},
  cfg:{group:'tipe_kamar',m1:{col:'total',agg:'sum'},rel:'none'},key:4650000,keyLabel:'Total pendapatan semua reservasi (Rp)',unit:'rp',
  nodes:['Daftar reservasi','Dikelompokkan per tipe kamar','Total per tipe + total semua'],dash:'Pendapatan per tipe kamar',dsub:'Data contoh fiktif'},
 {id:'okupansi',name:'Laporan omzet bulanan',desc:'Ringkas omzet Januari sampai Juni untuk 50 kamar.',tag:'ok',
  canvas:{nama:'Laporan omzet bulanan',masalah:'Angka omzet tiap bulan tersebar di beberapa file dan aku menyatukannya manual.',pengguna:'Revenue dan manajemen',input:'Tabel bulanan dengan kolom bulan, kamar_tersedia, kamar_terjual, omzet_juta',l1:'Baca tabel bulanan',l2:'Kelompokkan menurut bulan',l3:'Jumlahkan omzet per bulan',output:'Tabel omzet per bulan dan total enam bulan',aturan:'Satuan omzet dalam juta rupiah. Setiap bulan muncul satu kali.'},
  rows:[['bulan','kamar_tersedia','kamar_terjual','omzet_juta'],['Jan','1550','940','611'],['Feb','1400','980','637'],['Mar','1550','1080','756'],['Apr','1500','1060','742'],['Mei','1550','1240','868'],['Jun','1500','1280','960']],
+ dirty:{col:0,row:2,nodup:false},
  cfg:{group:'bulan',m1:{col:'omzet_juta',agg:'sum'},rel:'none'},key:4574,keyLabel:'Total omzet enam bulan (juta Rp)',unit:'num',
  nodes:['Tabel bulanan','Dikelompokkan per bulan','Omzet per bulan + total'],dash:'Omzet per bulan (juta Rp)',dsub:'Data contoh fiktif, 50 kamar'},
 {id:'rekon',name:'Cek tagihan vs pembayaran',desc:'Bandingkan tagihan dengan yang sudah dibayar tiap departemen.',tag:'ok',
  canvas:{nama:'Cek tagihan vs pembayaran',masalah:'Mencocokkan tagihan dan pembayaran tiap departemen memakan waktu dan rawan terlewat.',pengguna:'Tim finance dan audit',input:'Daftar tagihan dengan kolom kode, departemen, tagihan, dibayar',l1:'Baca daftar tagihan',l2:'Kelompokkan menurut departemen',l3:'Hitung selisih tagihan dan pembayaran',output:'Tabel selisih per departemen dan total selisih',aturan:'Selisih = tagihan dikurangi dibayar. Departemen dengan selisih di atas nol ditandai untuk dicek.'},
  rows:[['kode','departemen','tagihan','dibayar'],['T01','Restoran','2400000','2400000'],['T02','Restoran','1800000','1500000'],['T03','Laundry','600000','600000'],['T04','Spa','1200000','900000'],['T05','Laundry','450000','450000'],['T06','Spa','800000','800000']],
+ dirty:{col:1,row:2,nodup:false},
  cfg:{group:'departemen',m1:{col:'tagihan',agg:'sum'},m2:{col:'dibayar',agg:'sum'},rel:'minus'},key:600000,keyLabel:'Total selisih yang belum dibayar (Rp)',unit:'rp',
  nodes:['Daftar tagihan','Dikelompokkan per departemen','Selisih per departemen'],dash:'Selisih tagihan per departemen',dsub:'Data contoh fiktif'},
 {id:'forecast',name:'Forecast vs realisasi kamar',desc:'Seberapa meleset perkiraan kamar terjual dari kenyataan. Versi kecil: satu minggu.',tag:'small',
  canvas:{nama:'Forecast vs realisasi kamar',masalah:'Aku ingin tahu seberapa meleset perkiraan kamar terjual dibanding kenyataan.',pengguna:'Revenue manager',input:'Tabel harian dengan kolom hari, forecast_kamar, realisasi_kamar',l1:'Baca tabel harian',l2:'Jumlahkan forecast dan realisasi',l3:'Hitung selisih dalam persen',output:'Tabel selisih persen per hari dan selisih persen keseluruhan',aturan:'Selisih persen = (forecast dikurangi realisasi) dibagi realisasi.'},
  rows:[['hari','forecast_kamar','realisasi_kamar'],['Sen','40','36'],['Sel','38','40'],['Rab','42','41'],['Kam','45','47'],['Jum','50','52'],['Sab','55','50'],['Min','48','49']],
+ dirty:{col:0,row:2,nodup:false},
  cfg:{group:'hari',m1:{col:'forecast_kamar',agg:'sum'},m2:{col:'realisasi_kamar',agg:'sum'},rel:'pct'},key:0.95,keyLabel:'Selisih keseluruhan dalam persen (isi 0,95 kalau hitunganmu 0,95%)',unit:'num',
  nodes:['Tabel harian','Forecast dan realisasi dijumlah','Selisih persen'],dash:'Selisih forecast vs realisasi (%)',dsub:'Data contoh fiktif, satu minggu'},
 {id:'keluhan',name:'Rekap keluhan tamu',desc:'Hitung keluhan per kategori dan rata-rata lama penyelesaiannya. Versi kecil.',tag:'small',
  canvas:{nama:'Rekap keluhan tamu',masalah:'Catatan keluhan tamu menumpuk dan aku susah melihat kategori yang paling sering muncul.',pengguna:'Guest relation',input:'Log keluhan dengan kolom kode, kategori, menit_selesai',l1:'Baca log keluhan',l2:'Kelompokkan menurut kategori',l3:'Hitung banyaknya dan rata-rata menit',output:'Tabel kategori dengan jumlah keluhan dan rata-rata menit penyelesaian',aturan:'Satu baris satu keluhan. Nama tamu tidak dimasukkan.'},
  rows:[['kode','kategori','menit_selesai'],['K01','Kebersihan','20'],['K02','AC','45'],['K03','Kebersihan','15'],['K04','Wifi','30'],['K05','AC','60'],['K06','Kebersihan','25'],['K07','Wifi','10']],
+ dirty:{col:1,row:2,nodup:false},
  cfg:{group:'kategori',m1:{col:'kode',agg:'count'},m2:{col:'menit_selesai',agg:'avg'},rel:'none'},key:7,keyLabel:'Jumlah seluruh keluhan',unit:'num',
  nodes:['Log keluhan','Dikelompokkan per kategori','Jumlah dan rata-rata menit'],dash:'Keluhan per kategori',dsub:'Data contoh fiktif'}
 ];
@@ -75,7 +86,7 @@ function go(i,noscroll){S.i=Math.max(0,Math.min(5,i));qa('.panel').forEach(funct
   save();if(!noscroll)try{window.scrollTo(0,0);}catch(e){}}
 
 /* step 1 */
-function drawCases(){$('caseGrid').innerHTML=CASES.map(function(c){return '<label class="case"><input type="radio" name="case" value="'+c.id+'"'+(S.caseId===c.id?' checked':'')+'><b>'+T(c.name)+'</b><small>'+T(c.desc)+'</small><span class="tag '+c.tag+'">'+(c.tag==='ok'?'Cocok hari ini':'Mulai dari versi kecil')+'</span></label>';}).join('');}
+function drawCases(){$('caseGrid').innerHTML=CASES.map(function(c){return '<label class="case"><input type="radio" name="case" value="'+c.id+'"'+((S.caseId===c.id||(!S.caseId&&c===CASES[0]))?' checked':'')+'><b>'+T(c.name)+'</b><small>'+T(c.desc)+'</small><span class="tag '+c.tag+'">'+(c.tag==='ok'?'Cocok hari ini':'Mulai dari versi kecil')+'</span></label>';}).join('');}
 function renderCase(){var c=CASE(),r=$('resCase');if(!c||!S.flags.case){show(r,false);return;}
   r.innerHTML='<div class="reshead"><span class="pill">Studi kasus terpilih</span><span class="stamp">'+T(c.name)+'</span></div>'+
   '<div class="flow"><div class="node"><div class="c">Data masuk</div><p>'+T(c.nodes[0])+'</p></div><span class="arrow">➜</span><div class="node a"><div class="c">Diolah</div><p>'+T(c.nodes[1])+'</p></div><span class="arrow">➜</span><div class="node"><div class="c">Hasil</div><p>'+T(c.nodes[2])+'</p></div></div>'+
@@ -106,7 +117,8 @@ function makeFlow(){CF.forEach(function(k){S.canvas[k]=$('c-'+k).value;});S.flag
 /* step 3 */
 function setSrc(s){S.src=s;qa('#srcSeg button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-src')===s?'true':'false');});['sample','upload','paste','sheets'].forEach(function(k){show($('src-'+k),k===s);});
   var c=CASE();$('sampleInfo').textContent=c?'Data contoh untuk "'+c.name+'": '+(c.rows.length-1)+' baris, kolom '+c.rows[0].join(', ')+'.':'Pilih studi kasus di langkah 1 supaya ada data contoh.';}
-function dirtyRows(rows){var h=rows[0],b=rows.slice(1).map(function(r){return r.slice();});if(b.length>3){b[2][1>=h.length?0:(h[0]==='kode'?1:0)]=String(b[2][h[0]==='kode'?1:0]).toLowerCase()+' ';b.push(b[1].slice());}return [h].concat(b);}
+function dirtyRows(rows,d){if(d){var h0=rows[0],b0=rows.slice(1).map(function(r){return r.slice();});b0[d.row][d.col]=String(b0[d.row][d.col]).toLowerCase()+' ';if(!d.nodup)b0.push(b0[1].slice());return [h0].concat(b0);}
+  var h=rows[0],b=rows.slice(1).map(function(r){return r.slice();});if(b.length>3){b[2][1>=h.length?0:(h[0]==='kode'?1:0)]=String(b[2][h[0]==='kode'?1:0]).toLowerCase()+' ';b.push(b[1].slice());}return [h].concat(b);}
 function setData(ds,label){if(!ds.headers.length||!ds.rows.length){say('msgData','Tidak ada baris data. Pastikan baris pertama berisi nama kolom dan ada isinya.','bad');return;}
   S.ds=ds;S.srcInfo=label;S.flags.data=true;S.flags.run=false;S.flags.test=false;S.flags.dash=false;S.flags.sum=false;S.tested=null;S.cfg=defCfg(ds);
   say('msgData','Data masuk: '+ds.rows.length+' baris.'+(ds.truncated?' Dipotong di 20.000 baris.':''),'ok');['resRun','resTest','resDash','resSum'].forEach(function(id){show($(id),false);});show($('cardTest'),false);show($('cardNotes'),false);renderData();drawStepper();save();}
@@ -270,7 +282,7 @@ function bind(){
     switch(b.id){case 'prev':go(S.i-1);break;case 'next':go(S.i+1);break;case 'btnCase':startCase();break;case 'btnFlow':makeFlow();break;
       case 'btnFill':{var c=CASE();if(c){S.canvas=Object.assign({},c.canvas);drawCanvas();save();say('msgFlow','Terisi ulang dari studi kasus.','ok');}else say('msgFlow','Pilih studi kasus di langkah 1 dulu.','bad');break;}
       case 'btnClear':S.canvas={};drawCanvas();S.flags.flow=false;renderFlow();save();break;
-      case 'btnSample':{var cs=CASE();if(!cs){say('msgData','Pilih studi kasus di langkah 1 dulu.','bad');break;}S.dirty=$('dirty').checked;var rows=S.dirty?dirtyRows(cs.rows):cs.rows;setData(toDataset(rows),'data contoh'+(S.dirty?' (sengaja berantakan)':''));break;}
+      case 'btnSample':{var cs=CASE();if(!cs){say('msgData','Pilih studi kasus di langkah 1 dulu.','bad');break;}S.dirty=$('dirty').checked;var rows=S.dirty?dirtyRows(cs.rows,cs.dirty):cs.rows;setData(toDataset(rows),'data contoh'+(S.dirty?' (sengaja berantakan)':''));break;}
       case 'btnPaste':{var t=$('paste').value;if(!t.trim()){say('msgData','Kotaknya masih kosong. Tempel sel dulu.','bad');break;}setData(toDataset(parseDelim(t)),'tempelan dari spreadsheet');break;}
       case 'btnSheets':loadSheets();break;case 'btnRun':runWF();break;case 'btnTest':doTest();break;
       case 'btnKey':{var cc=CASE();if(cc){$('expected').value=String(cc.key);S.expected=String(cc.key);save();}break;}
