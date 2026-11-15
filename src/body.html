@@ -1,0 +1,197 @@
+<body>
+<div class="wrap">
+  <div class="top">
+    <div>
+      <p class="eyebrow">belajarlagi x Robina · Session 3</p>
+      <h1>Praktik <em>versi pertama</em></h1>
+      <p class="lead">Enam langkah, mengikuti slide. Tiap langkah menghasilkan sesuatu dari studi kasusmu. Datamu tersimpan di browser ini saja dan tidak dikirim ke mana pun.</p>
+    </div>
+    <button class="theme" id="theme" type="button" aria-pressed="false">Tema gelap</button>
+  </div>
+  <nav class="stepper" id="stepper" aria-label="Langkah"></nav>
+  <p class="stepname" id="stepname"></p>
+
+  <!-- 1 MULAI -->
+  <section class="panel p1" id="p-mulai" data-i="0">
+    <div class="card">
+      <h2>Tiga aturan hari ini</h2>
+      <ul class="rules">
+        <li><span class="dot">1</span><div><b>Boleh kasar</b>Versi pertama tidak perlu rapi. Yang penting jalan.</div></li>
+        <li><span class="dot">2</span><div><b>Pakai data contoh</b>Tamu dan angka fiktif. Jangan tempel data tamu atau data kantor asli.</div></li>
+        <li><span class="dot">3</span><div><b>Mulai dari yang kecil</b>Satu alur, satu hasil yang bisa dicek.</div></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Tiga anggapan yang menjebak</h2>
+      <div class="myth">
+        <div><s>Harus bisa coding dulu.</s><b>Yang kamu butuhkan adalah urutan kerja yang jelas.</b></div>
+        <div><s>Satu prompt panjang itu sudah workflow.</s><b>Prompt itu satu langkah. Workflow itu urutannya.</b></div>
+        <div><s>Hasilnya rapi, berarti benar.</s><b>Rapi belum tentu benar. Cocokkan dengan jawaban yang kamu tahu.</b></div>
+      </div>
+    </div>
+    <div class="card accent">
+      <h2>Pilih studi kasus</h2>
+      <p class="lead">Pilih tugas yang paling mirip pekerjaanmu. Dua yang bertanda "versi kecil" sengaja disederhanakan.</p>
+      <div class="cases" id="caseGrid" role="radiogroup" aria-label="Studi kasus"></div>
+      <div class="row"><button class="btn" id="btnCase" type="button">Mulai studi kasus ini</button></div>
+      <p class="msg" id="msgCase" role="status"></p>
+    </div>
+    <div class="res" id="resCase" hidden></div>
+  </section>
+
+  <!-- 2 ALUR -->
+  <section class="panel" id="p-alur" data-i="1" hidden>
+    <div class="card accent">
+      <h2>Susun alur kerjamu</h2>
+      <p class="lead">Satu kalimat per kolom sudah cukup. Isinya terisi dari studi kasusmu, ubah sesuai pekerjaanmu.</p>
+      <div class="row" style="margin-bottom:14px"><button class="btn ghost sm" id="btnFill" type="button">Isi ulang dari studi kasus</button><button class="btn ghost sm" id="btnClear" type="button">Kosongkan</button></div>
+      <div class="field"><label for="c-nama">Nama workflow</label><input type="text" id="c-nama" data-c="nama"></div>
+      <div class="field"><label for="c-masalah">Masalah yang ingin dibereskan</label><textarea id="c-masalah" data-c="masalah"></textarea></div>
+      <div class="field"><label for="c-pengguna">Siapa yang memakai hasilnya <small class="mut">(boleh kosong)</small></label><input type="text" id="c-pengguna" data-c="pengguna"></div>
+      <div class="field"><label for="c-input">Data masuk</label><textarea id="c-input" data-c="input"></textarea></div>
+      <div class="grid3">
+        <div class="field"><label for="c-l1">Langkah 1</label><input type="text" id="c-l1" data-c="l1"></div>
+        <div class="field"><label for="c-l2">Langkah 2</label><input type="text" id="c-l2" data-c="l2"></div>
+        <div class="field"><label for="c-l3">Langkah 3</label><input type="text" id="c-l3" data-c="l3"></div>
+      </div>
+      <div class="field"><label for="c-output">Hasil yang diharapkan</label><textarea id="c-output" data-c="output"></textarea></div>
+      <div class="field"><label for="c-aturan">Aturan yang harus dipenuhi</label><textarea id="c-aturan" data-c="aturan"></textarea></div>
+      <div class="row"><button class="btn" id="btnFlow" type="button">Buat alur kerja</button></div>
+      <p class="msg" id="msgFlow" role="status"></p>
+    </div>
+    <div class="res" id="resFlow" hidden></div>
+  </section>
+
+  <!-- 3 DATA -->
+  <section class="panel" id="p-data" data-i="2" hidden>
+    <div class="card accent">
+      <h2>Siapkan data</h2>
+      <p class="lead">Pilih sumbernya. Semua diproses di browser ini. Tidak ada yang diunggah ke server.</p>
+      <div class="seg" id="srcSeg" role="group" aria-label="Sumber data">
+        <button type="button" data-src="sample" aria-pressed="true">Data contoh</button>
+        <button type="button" data-src="upload" aria-pressed="false">Unggah Excel atau CSV</button>
+        <button type="button" data-src="paste" aria-pressed="false">Tempel dari Google Sheets</button>
+        <button type="button" data-src="sheets" aria-pressed="false" id="segSheets" hidden>Google Sheets (konektor)</button>
+      </div>
+      <div id="src-sample" style="margin-top:14px">
+        <p class="mut" id="sampleInfo"></p>
+        <label class="chk"><input type="checkbox" id="dirty"><span><b>Selipkan data berantakan untuk latihan</b><small>Spasi nyasar, huruf besar kecil beda, sel kosong. Persis jebakan di slide.</small></span></label>
+        <button class="btn" id="btnSample" type="button">Muat data contoh</button>
+      </div>
+      <div id="src-upload" style="margin-top:14px" hidden>
+        <div class="drop" id="drop"><p style="margin:0 0 8px"><b>Seret berkas ke sini</b> atau pilih dari komputer</p><input type="file" id="file" accept=".xlsx,.xlsm,.csv,.tsv,.txt"><p class="hint" style="margin:8px 0 0">Format: .xlsx, .csv, .tsv. Lembar pertama yang dibaca. Baris pertama harus nama kolom.</p></div>
+      </div>
+      <div id="src-paste" style="margin-top:14px" hidden>
+        <ol class="mut" style="margin:0 0 10px;padding-left:20px">
+          <li>Buka Google Sheets (atau Excel) milikmu.</li>
+          <li>Blok sel yang dipakai, termasuk baris nama kolom, lalu tekan Ctrl+C (Cmd+C di Mac).</li>
+          <li>Klik kotak di bawah, lalu Ctrl+V.</li>
+        </ol>
+        <p class="hint">Halaman ini tidak bisa membuka link Google Sheets langsung. Menyalin sel adalah cara paling aman: tidak perlu izin akses.</p>
+        <textarea class="mono" id="paste" placeholder="tipe_kamar&#9;malam&#9;total&#10;Deluxe&#9;2&#9;1100000"></textarea>
+        <div class="row" style="margin-top:10px"><button class="btn" id="btnPaste" type="button">Muat data tempelan</button></div>
+      </div>
+      <div id="src-sheets" style="margin-top:14px" hidden>
+        <p class="mut" style="margin:0 0 10px">Membaca lewat konektor Google Sheets milikmu sendiri. Claude akan minta izin sekali. Halaman ini hanya membaca, tidak mengubah sheet.</p>
+        <div class="field"><label for="sh-url">Link atau ID spreadsheet</label><input type="text" id="sh-url" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
+        <div class="field"><label for="sh-range">Rentang sel</label><input type="text" id="sh-range" value="A1:Z1000"><small class="mut">Contoh: Sheet1!A1:F200. Baris pertama harus nama kolom.</small></div>
+        <button class="btn" id="btnSheets" type="button">Baca dari Google Sheets</button>
+      </div>
+      <p class="msg" id="msgData" role="status"></p>
+    </div>
+    <div class="res" id="resData" hidden></div>
+  </section>
+
+  <!-- 4 JALANKAN DAN TES -->
+  <section class="panel" id="p-tes" data-i="3" hidden>
+    <div class="card accent">
+      <h2>Atur dan jalankan workflow</h2>
+      <p class="lead" id="wfInfo">Pilih cara menghitungnya. Sudah terisi sesuai studi kasusmu.</p>
+      <div class="grid2">
+        <div class="field"><label for="w-group">Kelompokkan menurut</label><select id="w-group"></select></div>
+        <div class="field"><label for="w-fcol">Hanya baris yang <small class="mut">(boleh kosong)</small></label><div class="grid2" style="gap:8px"><select id="w-fcol"></select><select id="w-fval"></select></div></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>Ukuran 1</label><div class="grid2" style="gap:8px"><select id="w-a1"></select><select id="w-c1"></select></div></div>
+        <div class="field"><label>Ukuran 2 <small class="mut">(boleh kosong)</small></label><div class="grid2" style="gap:8px"><select id="w-a2"></select><select id="w-c2"></select></div></div>
+      </div>
+      <div class="field"><label for="w-rel">Hubungan ukuran 1 dan 2</label><select id="w-rel"></select></div>
+      <div class="field" id="cleanBox"><span class="f">Rapikan data dulu <small class="mut">(opsional, coba jalankan tanpa ini dulu)</small></span>
+        <label class="chk"><input type="checkbox" id="cl-trim"><span><b>Buang spasi nyasar</b></span></label>
+        <label class="chk"><input type="checkbox" id="cl-case"><span><b>Samakan huruf besar kecil</b><small>"Deluxe" dan "deluxe " dianggap sama.</small></span></label>
+        <label class="chk"><input type="checkbox" id="cl-empty"><span><b>Buang baris yang angkanya kosong</b></span></label>
+        <label class="chk"><input type="checkbox" id="cl-dup"><span><b>Buang baris dobel</b></span></label></div>
+      <div class="row"><button class="btn" id="btnRun" type="button">Jalankan workflow</button></div>
+      <p class="msg" id="msgRun" role="status"></p>
+    </div>
+    <div class="res" id="resRun" hidden></div>
+    <div class="card" id="cardTest" hidden>
+      <h2>Tes: cocokkan hasilnya</h2>
+      <p class="lead" id="testInfo"></p>
+      <div class="field" id="expWrap" hidden><label for="expected">Angka total yang kamu tahu <small class="mut">(dari hitungan sendiri)</small></label><input type="text" id="expected" inputmode="decimal" placeholder="Contoh: 4650000"></div>
+      <div class="row"><button class="btn red" id="btnTest" type="button">Cocokkan dengan jawaban</button><button class="btn ghost sm" id="btnKey" type="button" hidden>Tampilkan jawaban kunci</button></div>
+      <p class="msg" id="msgTest" role="status"></p>
+    </div>
+    <div class="res" id="resTest" hidden></div>
+    <div class="card" id="cardNotes" hidden>
+      <h2>Catatan tes</h2>
+      <p class="lead">Tiga baris saja. Tombol di bawah mengisi dari hasil tesmu. Catatan ini dibahas di minggu mentoring.</p>
+      <div id="notes"></div>
+      <div class="row"><button class="btn ghost sm" id="btnNote" type="button">Isi dari hasil tes</button></div>
+      <h3 style="margin-top:16px">Pertanyaan untuk Claude kalau masih mentok</h3>
+      <pre class="prompt" id="stuckP"></pre>
+      <div class="row" style="margin-top:8px"><button class="btn ghost sm" data-act="copy" data-src="stuckP" type="button">Salin pertanyaan</button></div>
+    </div>
+  </section>
+
+  <!-- 5 DASHBOARD -->
+  <section class="panel" id="p-dash" data-i="4" hidden>
+    <div class="card accent">
+      <h2>Bikin dashboard dari hasilmu</h2>
+      <p class="lead">Papan angka sederhana: beberapa angka dan satu grafik. Hasilnya satu berkas HTML yang bisa dibuka offline dan diisi data baru.</p>
+      <div class="grid2">
+        <div class="field"><label for="d-title">Judul</label><input type="text" id="d-title"></div>
+        <div class="field"><label for="d-sub">Subjudul <small class="mut">(boleh kosong)</small></label><input type="text" id="d-sub"></div>
+      </div>
+      <div class="grid3">
+        <div class="field"><span class="f">Jenis grafik</span><div class="seg" id="segChart"><button type="button" data-v="bar" aria-pressed="true">Batang</button><button type="button" data-v="line" aria-pressed="false">Garis</button></div></div>
+        <div class="field"><span class="f">Warna</span><div class="seg" id="segAcc"><button type="button" data-v="#1F5FD6" aria-pressed="true">Biru</button><button type="button" data-v="#D62828" aria-pressed="false">Merah</button></div></div>
+        <div class="field"><label for="d-unit">Satuan angka</label><select id="d-unit"><option value="auto">Otomatis</option><option value="rp">Rupiah (Rp)</option><option value="pct">Persen (%)</option><option value="num">Angka biasa</option></select></div>
+      </div>
+      <span class="f">Angka utama yang ditampilkan</span>
+      <div id="kpiList"></div>
+      <label class="chk"><input type="checkbox" id="d-raw"><span><b>Sertakan data mentah di berkas</b><small>Maksimal 200 baris. Biarkan mati kalau datanya sensitif.</small></span></label>
+      <div class="field"><label for="d-note">Catatan kaki <small class="mut">(boleh kosong)</small></label><input type="text" id="d-note"></div>
+      <div class="row"><button class="btn" id="btnDash" type="button">Buat dashboard</button></div>
+      <p class="msg" id="msgDash" role="status"></p>
+    </div>
+    <div class="res" id="resDash" hidden></div>
+    <details id="ccode">
+      <summary>Atau minta Claude Code yang menyusun</summary>
+      <p class="lead">Tempel ini ke Claude Code bersama file datamu. Hitung ulang angkanya sendiri sebelum dipercaya.</p>
+      <pre class="prompt" id="ccP"></pre>
+      <div class="row" style="margin-top:8px"><button class="btn ghost sm" data-act="copy" data-src="ccP" type="button">Salin prompt</button></div>
+    </details>
+  </section>
+
+  <!-- 6 KUMPULKAN -->
+  <section class="panel" id="p-kumpul" data-i="5" hidden>
+    <div class="card accent">
+      <h2>Kumpulkan hasilnya</h2>
+      <p class="lead">Ringkasan ini terisi dari semua langkah. Salin ke Workflow Canvas-mu lalu kirim hari ini. Belum sempurna pun tidak apa.</p>
+      <div class="row" style="margin-bottom:12px"><button class="btn" id="btnSum" type="button">Susun ringkasan</button></div>
+      <p class="msg" id="msgSum" role="status"></p>
+    </div>
+    <div class="res" id="resSum" hidden></div>
+    <div class="card">
+      <h3>Sebelum pulang</h3>
+      <div id="doneList"></div>
+    </div>
+    <div class="card">
+      <h3>Hapus semua dari browser ini</h3>
+      <p class="mut">Menghapus isian, data, dan hasil. Tidak bisa dibatalkan.</p>
+      <div class="row"><button class="btn ghost sm" id="btnReset" type="button">Hapus semua</button><span class="msg" id="msgReset"></span></div>
+    </div>
+  </section>
+</div>
+<div class="navbar"><div class="in"><button class="btn ghost" id="prev" type="button">Sebelumnya</button><button class="btn" id="next" type="button">Lanjut</button></div></div>
